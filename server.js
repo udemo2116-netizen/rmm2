@@ -58,5 +58,5 @@ wss.on('connection', (ws) => {
 
 const PORT = process.env.PORT || 10000;
 server.listen(PORT, () => {
-    console.log(`RMSCI Relay server listening on port ${PORT}`);
+    console.log(`RMSCI2 Relay server listening on port ${PORT}`);
 });
