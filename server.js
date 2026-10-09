@@ -3,7 +3,7 @@ const http = require('http');
 
 const server = http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end('RMSCI Relay Server is Running\n');
+    res.end('DISCORD Relay Server is Running\n');
 });
 
 // Function to fetch the first target URL
