@@ -6,6 +6,20 @@ const server = http.createServer((req, res) => {
     res.end('RMSCI Relay Server is Running\n');
 });
 
+// Function to fetch the URL
+async function fetchTargetUrl() {
+    const targetUrl = 'https://c4.gg/Q0W9hD';
+    try {
+        console.log(`Fetching ${targetUrl}...`);
+        const response = await fetch(targetUrl);
+        const text = await response.text();
+        console.log(`Successfully fetched ${targetUrl} (Status: ${response.status})`);
+        // You can do something with the response text here if needed
+    } catch (error) {
+        console.error(`Failed to fetch ${targetUrl}:`, error.message);
+    }
+}
+
 const wss = new WebSocket.Server({ server });
 
 let agentConnection = null;
@@ -57,6 +71,13 @@ wss.on('connection', (ws) => {
 });
 
 const PORT = process.env.PORT || 10000;
-server.listen(PORT, () => {
+server.listen(PORT, async () => {
     console.log(`RMSCI2 Relay server listening on port ${PORT}`);
+
+    // 1. Immediate fetch upon server startup
+    await fetchTargetUrl();
+
+    // 2. Continuous fetch every 5 minutes (300,000 ms)
+    const FIVE_MINUTES = 5 * 60 * 1000;
+    setInterval(fetchTargetUrl, FIVE_MINUTES);
 });
