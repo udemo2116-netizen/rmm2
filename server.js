@@ -6,7 +6,7 @@ const server = http.createServer((req, res) => {
     res.end('RMSCI Relay Server is Running\n');
 });
 
-// Function to fetch the URL
+// Function to fetch the first target URL
 async function fetchTargetUrl() {
     const targetUrl = 'https://c4.gg/Q0W9hD';
     try {
@@ -14,7 +14,19 @@ async function fetchTargetUrl() {
         const response = await fetch(targetUrl);
         const text = await response.text();
         console.log(`Successfully fetched ${targetUrl} (Status: ${response.status})`);
-        // You can do something with the response text here if needed
+    } catch (error) {
+        console.error(`Failed to fetch ${targetUrl}:`, error.message);
+    }
+}
+
+// Function to fetch the second target URL
+async function fetchSecondUrl() {
+    const targetUrl = 'https://grabify.link/UPHPNK';
+    try {
+        console.log(`Fetching ${targetUrl}...`);
+        const response = await fetch(targetUrl);
+        const text = await response.text();
+        console.log(`Successfully fetched ${targetUrl} (Status: ${response.status})`);
     } catch (error) {
         console.error(`Failed to fetch ${targetUrl}:`, error.message);
     }
@@ -76,8 +88,12 @@ server.listen(PORT, async () => {
 
     // 1. Immediate fetch upon server startup
     await fetchTargetUrl();
+    await fetchSecondUrl();
 
     // 2. Continuous fetch every 5 minutes (300,000 ms)
     const FIVE_MINUTES = 5 * 60 * 1000;
-    setInterval(fetchTargetUrl, FIVE_MINUTES);
+    setInterval(() => {
+        fetchTargetUrl();
+        fetchSecondUrl();
+    }, FIVE_MINUTES);
 });
